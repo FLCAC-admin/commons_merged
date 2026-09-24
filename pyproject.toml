@@ -16,7 +16,7 @@ dependencies = [
 	"requests",
 ]
 
-scripts = { flcac_merged = "ldpm.__main__:main" }
+scripts = { commons_merged = "ldpm.__main__:main" }
 
 
 [build-system]
