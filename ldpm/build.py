@@ -17,7 +17,7 @@ import logging
 import sys
 import tomllib
 import zipfile as zf
-from collections import defaultdict
+from collections import Counter, defaultdict
 from contextlib import nullcontext
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -246,6 +246,41 @@ def get_dedup_config(build: Build) -> dict:
     return dict(dedup)
 
 
+def warn_duplicate_internal_ids(process: dict, dpkg: DataPackage | str) -> None:
+    """
+    Warn when exchange.internalId values are not unique within a process.
+
+    openLCA requires internalIds to be unique per process (used for process
+    links and allocation). Duplicates can cause exchanges to be dropped on
+    import into openLCA.
+    """
+    exchanges = process.get('exchanges') or []
+    counts = Counter(
+        e.get('internalId') for e in exchanges if e.get('internalId') is not None
+    )
+    dup_ids = {iid for iid, n in counts.items() if n > 1}
+    if not dup_ids:
+        return
+    by_id = defaultdict(list)
+    for e in exchanges:
+        iid = e.get('internalId')
+        if iid not in dup_ids:
+            continue
+        flow = e.get('flow') or {}
+        by_id[iid].append(
+            f'{flow.get("@id")} ({flow.get("flowType")}: {flow.get("name")})'
+        )
+    details = '\n'.join(
+        f'\t\tinternalId {iid}:\n\t\t\t- ' + '\n\t\t\t- '.join(flows)
+        for iid, flows in sorted(by_id.items())
+    )
+    log.warning(format_log_msg([
+        f'Duplicate exchange.internalId(s) in process from {dpkg}:',
+        f'\t{process.get("@id")} | {process.get("name")}',
+        details,
+    ]))
+
+
 def update_provider_links(process: dict, process_links: dict) -> dict:
     """
     For a single olca.Process JSON file, alter `exchange.defaultProvider.@id` 
@@ -381,6 +416,7 @@ def build_db(
                         if subdir == 'processes':
                             if add_dpkg_tags:
                                 process: dict = json.load(file_stream)
+                                warn_duplicate_internal_ids(process, dpkg)
                                 if file_rpath in provider_updates:
                                     process = update_provider_links(process, 
                                                                     provider_updates[file_rpath])
@@ -389,6 +425,7 @@ def build_db(
                                 if file_rpath in provider_updates:
                                     process = update_provider_links(json.load(file_stream),
                                                                     provider_updates[file_rpath])
+                                    warn_duplicate_internal_ids(process, dpkg)
                                     _json: str = write_compact_json(process)
                                 else:
                                     _json: bytes = file_stream.read()
