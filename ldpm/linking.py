@@ -123,9 +123,9 @@ def classify_exchanges(df_exchanges: pd.DataFrame) -> tuple[pd.DataFrame, pd.Dat
              f'\t- {"\n\t\t- ".join([str(e) for e in bad_exchanges])}']))
         # cross-dpkg variance in exchange definition/orientation conventions may disrupt linking
         df_odd_exchanges = df_exchanges.query(
-            '(`e.flow.flowType` == "PRODUCT_FLOW" and `e.isInput` and `e.isQuantitativeReference`) or ',
-            '(`e.flow.flowType` == "WASTE_FLOW" and `e.isInput` and not `e.isQuantitativeReference`) or ',
-            '(`e.flow.flowType` == "WASTE_FLOW" and not `e.isInput` and `e.isQuantitativeReference`)',
+            '(`e.flow.flowType` == "PRODUCT_FLOW" and `e.isInput` and `e.isQuantitativeReference`) or '
+            '(`e.flow.flowType` == "WASTE_FLOW" and `e.isInput` and not `e.isQuantitativeReference`) or '
+            '(`e.flow.flowType` == "WASTE_FLOW" and not `e.isInput` and `e.isQuantitativeReference`)'
             )
         odd_exchanges = df_odd_exchanges[['p.@id', 'e.internalId']].to_dict('records')
         log.debug(format_log_msg(
