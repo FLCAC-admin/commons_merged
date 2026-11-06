@@ -12,42 +12,8 @@ USLCI_Database_Public:
   null
 
 Woody_biomass:
-  5a24670b-1589-4653-8d23-22647f4dcec5:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      6:
-        75d4be66-12a7-30b3-bc57-fa724c941b0e
-  
-  2db49b0e-43d9-4a14-8688-7d7d6bae6a2c:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      4:
-        75d4be66-12a7-30b3-bc57-fa724c941b0e
-   
-  a55482f2-abf9-4396-ba6e-43344eb54193:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      10:
-        75d4be66-12a7-30b3-bc57-fa724c941b0e
-  
-  c0bec04c-5e8a-4e1c-a6ad-b9a396be1ecb:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      10:
-        75d4be66-12a7-30b3-bc57-fa724c941b0e
-        
-  ffb4202b-99a4-4015-92c0-3691cd95765d:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      10:
-        75d4be66-12a7-30b3-bc57-fa724c941b0e
-
-  # ToDo: patch amend process to use bridge directly
-  0b0aaa53-516a-4eea-a839-104a0dfe0371:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      2:
-        38cefa84-359f-4282-ad72-1006ea44f60f
-  548d1ca9-52f7-4eb5-b407-ab72c3cf9a82:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      3:
-        38cefa84-359f-4282-ad72-1006ea44f60f
-  94ab5ff8-3735-4f89-9230-6434f64ee729:
-    3bca3bc6-2443-3184-8976-72dc98d258f6:
-      2:
-        3cd1c19d-3dc8-4dfe-b965-dc85751f2a47
-        # or?: 95851b83-d827-4415-b3de-5378dab825c8
+  null
+  # 5a24670b-1589-4653-8d23-22647f4dcec5:
+    # 3bca3bc6-2443-3184-8976-72dc98d258f6:
+      # 6:
+        # 75d4be66-12a7-30b3-bc57-fa724c941b0e

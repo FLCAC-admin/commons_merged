@@ -1,7 +1,6 @@
 [build]
 name = "Commons_Merged_Hybrid"
-version = "0.1.0-alpha"
-# repository = "https://github.com/FLCAC-admin/commons_merged/"
+version = "0.1.0-beta"
 
 [dependencies]
 # LCI data packages

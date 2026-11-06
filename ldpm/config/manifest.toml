@@ -1,11 +1,11 @@
 [build]
 name = "Commons_Merged"
-version = "0.1.0-alpha"
-# repository = "https://github.com/FLCAC-admin/commons_merged/"
+version = "0.1.0-beta"
 
 [dependencies]
 # LCI data packages
 USLCI_Database_Public = "*" # asterisk wildcard resovles to latest release
+# USLCI_Database_Public = { commit = "b7c77cf481140a9aa2ad3d2c0d661abbc34e8c74" }
 US_electricity_baseline = { version = "*", exclude = "product_systems" }
 Woody_biomass = "*"
 # Building_Systems = "*"

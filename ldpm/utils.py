@@ -1,5 +1,4 @@
 import logging
-import logging.config
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -7,6 +6,74 @@ from pathlib import Path
 from platformdirs import user_data_dir
 
 from ldpm import __path__ as root_path
+
+
+# %% paths container
+ROOT_PATH = Path(*root_path)
+
+@dataclass
+class Paths:
+    root: Path = ROOT_PATH
+    config: Path = ROOT_PATH / 'config'
+    project: Path = ROOT_PATH.parent
+    output: Path = ROOT_PATH.parent / 'output'
+    cache: Path = field(init=False)
+    
+    def __post_init__(self) -> None:
+        self.output.mkdir(parents=True, exist_ok=True)
+
+        # Cache FLCAC data packages in ~/LDPM/FLCAC
+            # on Windows, C:\Users\<user>\AppData\Local\LDPM\FLCAC
+        self.cache = Path(user_data_dir(appauthor='LDPM', appname='FLCAC'))  
+        self.cache.mkdir(parents=True, exist_ok=True)
+        # TODO: split cache into FLCAC [dependencies] and <name?> for [external-dependencies]
+
+PATHS = Paths()
+
+
+# %% logging
+LOGGING_CONFIG = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(levelname)s - %(message)s',
+            'datefmt': '%T',
+        },
+        'standard': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s - %(message)s',
+            'datefmt': '%y-%m-%d %T',
+        },
+        'detailed': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s:%(lineno)s, in %(funcName)s - %(message)s',
+            'datefmt': '%y-%m-%d %T',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'INFO',
+            'formatter': 'simple',
+        },
+        'file_build': {
+            'class': 'logging.FileHandler',
+            'level': 'INFO',
+            'formatter': 'standard',
+            'filename': PATHS.output / 'build.log',
+            'mode': 'w',  # overwrites file
+        },
+        'file_debug': {
+            'class': 'logging.FileHandler',
+            'level': 'DEBUG',
+            'formatter': 'detailed',
+            'filename': PATHS.output / '_debug.log',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file_build', 'file_debug'],
+        'level': 'DEBUG',
+    },
+}
 
 
 # %% helper funcs
@@ -18,6 +85,7 @@ def find_file(file_name: str):
     """
     Attempt to find a single file within the project directory
     """
+    log = logging.getLogger(__name__)
     file_paths = list(PATHS.project.rglob(file_name))
     if len(file_paths) == 0:
         msg = f'No "{file_name}" file detected in the repo.'
@@ -79,90 +147,3 @@ def merge_nested_dicts(target: Mapping, source: Mapping, same_shape=True, path=[
                     elif source[key] is not None:
                         result[key] = source[key]
     return result
-
-
-# %% paths container
-ROOT_PATH = Path(*root_path)
-
-@dataclass
-class Paths:
-    root: Path = ROOT_PATH
-    config: Path = ROOT_PATH / 'config'
-    project: Path = ROOT_PATH.parent
-    output: Path = ROOT_PATH.parent / 'output'
-    cache: Path = field(init=False)
-    
-    def __post_init__(self) -> None:
-        self.output.mkdir(parents=True, exist_ok=True)
-
-        # Cache FLCAC data packages in ~/LDPM/FLCAC
-            # on Windows, C:\Users\<user>\AppData\Local\LDPM\FLCAC
-        self.cache = Path(user_data_dir(appauthor='LDPM', appname='FLCAC'))  
-        self.cache.mkdir(parents=True, exist_ok=True)
-        # TODO: split cache into FLCAC [dependencies] and <name?> for [external-dependencies]
-
-PATHS = Paths()
-
-
-# %% logging
-LOGGING_CONFIG = {
-    'version': 1,
-    'loggers': {
-        'build': {  # root logger
-            'handlers': ['console', 'file_info', 'file_debug'],
-            # 'level': 'INFO',
-        },
-        'utils': {
-            'handlers': ['console', 'file_info', 'file_debug'],
-            # 'level': 'DEBUG',
-            'propagate': False,
-        },
-        # 'another_module': {
-        #     'handlers': ['console', 'file_warning'],
-        #     'level': 'WARNING',
-        #     'propagate': False,
-        # },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-            'level': 'INFO',
-        },
-        'file_info': {
-            'class': 'logging.FileHandler',
-            'filename': PATHS.output / 'build.log',
-            'formatter': 'standard',
-            'level': 'INFO',
-        },
-        'file_debug': {
-            'class': 'logging.FileHandler',
-            'filename': PATHS.output / 'debug.log',
-            'formatter': 'detailed',
-            'level': 'DEBUG',
-        },
-        # 'file_error': {
-        #     'class': 'logging.FileHandler',
-        #     'filename': PATHS.output / 'error.log',
-        #     'formatter': 'detailed',
-        #     'level': 'ERROR',
-        # },
-    },
-    'formatters': {
-        'standard': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s - %(message)s',
-            'datefmt': '%y-%m-%d %T',
-        },
-        'detailed': {
-            'format': '%(asctime)s [%(levelname)s] %(name)s:%(lineno)s, in %(funcName)s - %(message)s',
-            'datefmt': '%y-%m-%d %T',
-        },
-        'simple': {
-            'format': '%(levelname)s - %(message)s',
-            'datefmt': '%T',
-        },
-    },
-}
-
-logging.config.dictConfig(LOGGING_CONFIG)
-log = logging.getLogger(__name__)

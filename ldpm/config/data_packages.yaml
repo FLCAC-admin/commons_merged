@@ -13,6 +13,7 @@ Federal_LCA_Commons:
         1.2024-12.0: 9ce9b28e019f94ff9cf7596b3e04ba2db70f6100
         1.2021-10.0: 01cb524e3ff80519846929f59dd67aebd378c758
     elementary_flow_list:
+        1.2026-09.0: 4bcadd19ba78ff9ebf85c9ffa5541734166388d2
         1.2024-12.1: e77e156bd45c746f34f659c0506a8a7d9cbd5693
         1.2024-12.0: 6f84d4b90dea264b3d0a2daa7d71e6bdf4f67c66
         1.2024-05.0: e8b7bf06a949a1dd423f93ebf926b96934de427b
@@ -23,15 +24,21 @@ Federal_LCA_Commons:
     Impact_World_Plus:
         1.2024-12.0: 0ced9f11f4fe8e13bb03cc88eede830b93d71992
     IPCC_GWP:
+        1.2026-09.2: f0f90ef2f056be6e1686df0858a57b66ecfa2a62
+        1.2026-09.1: ff30b1fdcadfd15903caf5291ae0dc569f07592b
+        1.2026-09.0: 65af94c3dd270caac7f57d8b5ca05ff4ea6d8396
         1.2024-12.0: cbd5216d1305e90b095eb63b0a62a6f8eefe7130
     ReCiPe:
         1.2024-12.0: 5d9bf5866c5e96fb9703f5d42ea1534aecefeeab
         1.2024-06.0: be7be49b34721f0e24e46c5a4f3e341d2cdba4be
     TRACI:
+        1.2026-10.0: 46d17f04948dcfb9722d730e928d441248fe60c2
         1.2024-06.0: 76549c7c7a3bb984d1e808bdcc91143fa957cbb2
     TRACI_2_2:
+        1.2026-10.0: d5e80f31ba78410dfea4da8f53435aa731da9d22
         1.2025-04.0: b7221a76f75c5fb720ae310fbfba73fdc996741a
     US_electricity_baseline:
+        1.2026-06.1: ac82eb31179a3a59196b8b30bd06e39e593b0261
         1.2026-06.0: 21df7a5360d0b78968554b00649031e0ffef3128
         1.2025-06.0: 9581404a9c3f6903d5614a7af9436bfb9c9676b7
         1.2020-08.0: feae44943f7984498ed2aad7d931b74f34f8bca4
@@ -41,6 +48,7 @@ National_Energy_Technology_Lab:
         1.2018-08.0: 919f7d4448fae4f4eb419cd8a3e8808de5da9068
 National_Renewable_Energy_Laboratory:
     USLCI_Database_Public:
+        1.2026-09.0: fddfc1a7a6c93e1a71f457446df7813245c828e6
         1.2026-06.1: 03276bf91872da53aa27be96f48fa4c8243047e8
         1.2026-06.0: a900b507109a80c21db983e5f13f283f4a84aa51
         1.2026-03.0: 00a040571f44a37517a3e8ebb1dfb54d8dd09c4a
@@ -56,11 +64,15 @@ NC_State_Dept_Forest_Biomaterials:
     Kraft_pulp:
         Public: b51b4ed0978e98cf29825573887fb792f290284c
 NIST:
+    advanced_carbon_technologies:
+        1.2026-11.0: a5134b00f68318eadcee2f5352ea53acb6f42f16
     Building_Systems:
         1.2026-06.0: 772380c1a002c45872a4783a237b36a8d40e8b20
         1.2025-09.0: 0831ca897a79eb59d8dfdc3046a75dc395d4706e
         1.2025-07.0: 7a0c399a21710faa17103775fe00a03aaa8ca96c
     construction_materials:
+        1.2026-10.0: 0014f1a89a1652e1f1707e7d617c5c28937b0c9c
+        1.2026-09.0: c988611e98973067b53e50ed6bc46ae3ad53b556
         1.2026-07.0: f73c1eb17192a3d8c5cd6e08ca0d086ce5f19167
         1.2026-05.0: f8542da371e694a6ad9c20b5c45ded43d067f86b
         1.2025-07.0: 70de0796f562174b60fec8aaf7008d1a89ab4eda
@@ -88,6 +100,9 @@ US_Environmental_Protection_Agency:
         1.2022-06.0: 86f9efb78ee9af4d9547973339a326e56c38b536
 US_Forest_Service_Forest_Products_Lab:
     Woody_biomass:
+        1.2026-11.0: 9c9be79c5fbfcd7ec97ee7f5554783492035ed98
+        1.2026-09.1: 040c5c07e5bb54e85483e2f23870291baa8461d6
+        1.2026-09.0: c1680a801bac91696ff79274517130a5166bd02f
         1.2026-04.2: 64e3f44bfc2f11482001d4d6f3c86b511805b0e9
         1.2026-04.1: 77f4b28d63571a93d43badf45ddb0c6a3134ed23
         1.2026-04.0: b06b947adbfad9ce22b2092be7f35eebaafd47ae

@@ -5,37 +5,45 @@
 # Note: under each top-level dpkg key, @type keys must be pluralized to match folder names in .ZIPs from FLCAC
 
 US_electricity_baseline:
-  processes:
-
+  processes: 
+    null
   flows:
     - 3bca3bc6-2443-3184-8976-72dc98d258f6
+    - 66c312ea-5071-3a57-9940-25a403d38dea  # CUTOFF (no providers on FLCAC); most consumers here
+    - fc406690-160c-37d5-bf36-added9542164
 
 
 Woody_biomass:
-  processes:
-
+  processes: 
+    null
   flows:
-    # only CORRIM contains default providers; to-be-migrated to USFS:
+    # only CORRIM contains default providers; to-be-migrated to USFS (or substituted for other flows/providers)
     - 7a157e7c-91ca-3d1e-b13c-df3bca99bd51
     - 945a2b4b-8245-3347-ae34-cba43f0d4a28
     - 99452873-5693-3ecf-a0a6-e8a8821728bb
-    # CORRIM & woody providers
+    # Single-provider flows, regionalized [USFS]
+    - 3a0a003d-e41e-4332-be8a-cd93fbfc1974
     - 3c670bdf-eb7b-3ad2-bd9b-badb089ba9df
     - 456df825-bfb7-31be-a088-e89c0318c699
     - 4c1828a4-14fa-34d6-aa01-81f86d817599
+    - 550c195a-26b6-4b91-adf6-bb56608d9138
     - 76dd64c9-130f-3803-bdf2-ae1445a7372d
     - 8a761536-61b0-3f99-aca1-c8408fdc06e1
-    - b003f26f-e4d9-334a-8c25-e60d46315eb7
-    - f4e19741-e926-3559-bf34-d54bd937ab6a
-    # Multi-provider flows (ToDo: create & connect mixing processes)
-    - 3a0a003d-e41e-4332-be8a-cd93fbfc1974
-    - 550c195a-26b6-4b91-adf6-bb56608d9138
     - a9354422-7e84-3f28-b64f-c038c3b0052b
     - aee60ee9-18e5-4aa6-8368-c5d4da531b1a
+    - b003f26f-e4d9-334a-8c25-e60d46315eb7
     - b1e0aa1e-6a7d-4ae5-a05a-ccfb8f2b417d
     - f22f3515-1680-4679-8234-cc155fb827f0
-    # Single-provider flows (ToDo: compile programmatically):
+    - f4e19741-e926-3559-bf34-d54bd937ab6a
+    # Single-provider flows (ToDo: compile programmatically)
     - 52c67bbc-294d-401b-b305-7ec64067aca2
+    - 7874841a-b2de-4b37-847f-83291d5a977a
+    - 8eefe5ec-36e3-34d8-94cc-58780605e2a2  # 3 CORRIM regional providers but only 1 provider here
+    - 8f0bf8b9-ac33-4461-b715-3bb418ea1269
+    # CUTOFF flows, no provider
+    - 31948a1f-886a-3020-b33b-d381a427dbc6
+    - 7334df65-355b-4f06-87e4-afc0f45b8a8e
+    - dac6904f-42a7-3229-95d4-39c316fbd8e3
 
 
 USLCI_Database_Public:
@@ -44,51 +52,81 @@ USLCI_Database_Public:
     - 442ab5b5-32f4-4de0-9aa7-fa989b0579af
     - 6af5ef7b-10c2-4e38-b956-05780573b9ce
   flows:
-    # USEEIO bridge flows:
-    - a6bee800-f46c-4933-a6be-05305133d239
+    # USEEIO bridge reference flows:
+    - 0cc6f1f6-5ff4-36c7-ba84-472348971d75  # USLCI-to-USEEIO bridge makes CONMAT-* redundant
+    - 19fb905b-a259-3480-848f-af6a058a4d99
     - 6b902763-aac9-346e-932c-1ce6f29d5904
     - 73c55a19-ecdc-3918-8dcb-8e6f7f1bf9bd
-    # woody biomass flows, but choose USLCI for now (updated .name):
-    - 31948a1f-886a-3020-b33b-d381a427dbc6
-    - dac6904f-42a7-3229-95d4-39c316fbd8e3
-    # woody biomass flows, but choose USLCI for now (updated .category):
-    - 7334df65-355b-4f06-87e4-afc0f45b8a8e
+    - a6bee800-f46c-4933-a6be-05305133d239
+    - bc8e6793-7071-3c12-bac4-bb5adcb44f79  # bridge processes in USLCI & BSYS differ
+    - f5f83bac-2787-4cb5-968a-2f8feefeec78
     # CUTOFF flows, no provider
     - 08f2b558-7aa9-4bfd-aa38-67f8b619095f
-    - 12f3be27-4d77-4668-a021-071096d78b3f  # provider in NIST/construction_materials
     - 2eb3ce0f-e59a-3ba9-ab44-2398b021d108
     - 46458569-4d5e-33d7-83b9-0b04626f9f67
     - 5e59bc89-87dd-3469-bef9-fffabbcad405
     - 712f5239-6b2b-34f5-ae19-5b5265bd123c
     - 7224edad-d8e7-48db-9fa7-0e49bbca75b6
-    - 8191e38b-421f-4348-a2e0-29303147f2d1
-     # migrate to 'Single-provider flows' once FHWA issue is resolved:
-    - 628c07ec-0802-39c1-ab88-1c62848ef436
-    # Single-provider flows (ToDo: compile programmatically):
+    - 8191e38b-421f-4348-a2e0-29303147f2d14
+    - c3a414cf-44c3-409b-8481-7c0fafdb225c  # most consumers in CONMAT
+    # Single-provider flows (TODO: compile programmatically)
     - 0178afd7-c74a-3a8f-8f15-d57904d3c377
+    - 055e3f80-da33-3f27-be5f-8d0c59872b9a
+    - 072a4586-44d6-3428-a15c-8e1e8a0031cc
+    - 09546c62-30a7-4c09-8376-b342fd67e758
     - 0def374e-dc34-4f2a-81d6-1a8f4eb7faa6
     - 0e44e579-abb0-3c77-af64-c774d65be529
+    - 0e63d1db-e383-3c9a-b02a-b5eebafe87d1
+    - 1a0678a7-09b1-339d-8f05-259a14f0ab84
+    - 1a34bf95-f897-4af9-b70c-368fce9e41d6
+    - 1ca3b8d5-a002-41c1-bdce-8db63ea6291e
     - 1e68baef-0ed7-37bb-9919-61963f9fbd08
     - 1f8a25cb-2a84-45ca-b418-1b6ab9c38c2c
     - 27eb16da-5cbe-393a-a616-1022c15a8d72
     - 2afb4e2f-b224-3900-956f-03e3f27b276b
     - 2bb0cd6b-941b-38da-856c-1b7bd0cc5f49
+    - 2c696e73-bd01-3f7b-a6c5-a56dee44d66e
+    - 2f9d79bf-e4c6-400a-a076-8c00f468fa3b
+    - 3072b205-2fd9-32f4-bdb3-ac2e3b739a84
+    - 3f2fed05-f530-32e9-b0f9-0dcb5280aa9d
     - 42385daf-e0a4-35de-9a68-931400275c60
+    - 42ae5c68-7cb4-4874-9cdf-aecf1d1560f4
     - 4326be78-ae8b-3446-9310-278636ee68c5
     - 43b6c51f-f1a9-4a6d-8070-fa84adf27d23
     - 45f1fd00-2093-3e05-9b41-e942b9e8cec9
+    - 4b90664a-57c7-3fe1-be38-2ed8d4e0812b
+    - 4cba2656-7694-3b28-9ced-2b49acaa0f7a
+    - 4f1bfabb-f0d3-3f1f-a905-2fd9b36bbfa0
+    - 52effa32-8328-32c3-87aa-ac40ebf3aff2
+    - 59449b10-044a-3a9b-a6e6-5c5fc97b50bb
+    - 628c07ec-0802-39c1-ab88-1c62848ef436
+    - 639db750-cc06-484e-b426-df057d7d44c0
+    - 654a5cf6-185f-3d91-89ef-42442d1825e8
     - 692bdff7-996c-43bd-8182-4528f0e69672
     - 91feb044-e771-35a3-a81f-ac076c5f9b83
+    - 99479e91-ab64-3c73-86cb-d96373f37939
+    - 9b31b7aa-2f86-4af6-b684-cc066f76aafa
     - a5c7d642-4e3a-40af-a919-a2f7601340b0
     - ba4fbc4f-a9ab-387c-8bdd-9308dc19f404
     - bc38e349-1ccf-3855-a615-a4f581ab875b
     - c5f94bb1-b39e-39fa-b616-376a30531c2d
+    - d0477b6a-115f-350d-bbb4-7f62243e3476
+    - d0da796c-bf22-435f-a8f4-f980bebc28ff
     - d12c4a32-12a8-4673-9b14-5d227d2a128e
     - d3904ae5-01cb-45d9-bff2-555f509e2677
     - d815ff18-015c-3afb-be18-be03bdf325da
+    - e8fbfbfb-24e9-49a6-a047-41f1646bf7f7
     - ea8515c5-e3d4-4f42-a856-67a9b85b30a0
+    - ed1981de-52d1-366c-b629-4abfe56fffd3  # ISSUE: ref. flow of outdated process
     - f15f7a4a-994e-4547-b334-549fa863cd91
     - f77da622-e84d-3639-8917-fcf792aaee13
     - f7c00d19-9601-373a-ba23-593e251b4dee
     - f806b9df-b77c-3369-a00f-feda82b0778c
     - fb62f38b-09c1-42c0-aaa1-53a1c7b53200
+    # land transformation (elem.) flows
+    - 28e5f69f-7b2e-4e31-9725-d407b2964b3f
+    - 29630a65-f38c-48a5-9744-c0121f586640
+    - 3e22e0a7-477a-3da2-a159-d53b5f8dd898
+    - 7dbb6483-0a2b-33f3-a42e-1c9035dc6a2c
+    - ac0aba5c-66ce-42c9-9f46-1e47ab7bc4b9
+    - c0143eba-3daf-44ad-8d34-6e1d34128ace

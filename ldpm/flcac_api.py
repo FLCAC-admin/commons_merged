@@ -78,9 +78,9 @@ class APIClientSession:
 
     def compile_dpkg_release_index(self) -> None:
         """
-        Fetch all available dpkgs and release versionss thereof via FLCAC API, 
-        then write metadata to ./config/data_packages.yaml if non-existent or
-        a new release is available
+        Generate an index of all available dpkg releases. Fetches metadata via
+        FLCAC API, compiles {group: {name: {version: commit}}} dict, then writes
+        to ./config/data_packages.yaml if non-existent or new release is available
         """
         response = self.get(endpoint='repository')  # list public dpkg repos
         metadata_dpkgs = response.json()
@@ -89,25 +89,27 @@ class APIClientSession:
         release_dates = []
         for dpkg in sorted(metadata_dpkgs, key=lambda d: (d['group'].lower(), d['name'].lower())):
             group, name = dpkg['group'], dpkg['name']
-            release_dates.append( 
-                datetime.fromtimestamp(
-                    dpkg['settings']['releaseDate'] / 1000.0,  # milliseconds
-                    tz=ZoneInfo('America/New_York'))
-                )
+            if 'commons_merged' in name:
+                continue
             if not dpkg['hasReleases']:
                 log.warning(f'Data package has no releases: {name}')
-                index[group][name] = ''
+                index[group][name] = None
             else:
+                release_dates.append( 
+                    datetime.fromtimestamp(
+                        dpkg['settings']['releaseDate'] / 1000.0,  # milliseconds
+                        tz=ZoneInfo('America/New_York')))
                 response = self.get(f'history/{group}/{name}')  # list all releases
                 dpkg_releases = response.json()
                 for release in dpkg_releases:  # already ordered newest-to-oldest
                     info = release['releaseInfo']
                     index[group][name][info['version']] = info['commitId']
-
+        
+        # skip dpkg-index update if generated after the latest release
         if (_PATH_INDEX_DPKG.exists() and 
             (datetime.fromtimestamp(_PATH_INDEX_DPKG.stat().st_mtime).astimezone() > 
              max(release_dates))):
-            return  # no new releases available; skip recompilation
+            return
         else:
             with _PATH_INDEX_DPKG.open('w') as file:
                 yaml.safe_dump(index, file, sort_keys=False, indent=4)
