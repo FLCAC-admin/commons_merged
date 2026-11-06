@@ -44,7 +44,7 @@ def load_partial_json_process(file_stream: bytes)-> dict:
     """
     class RefEntity(msgspec.Struct):
         id: str = msgspec.field(name="@id")
-        # name: str  # currently only needed for Process
+        name: str
 
     class Flow(RefEntity):
         flowType: str
@@ -60,7 +60,6 @@ def load_partial_json_process(file_stream: bytes)-> dict:
         description: str | dict = ''
 
     class Process(RefEntity):
-        name: str
         category: str
         exchanges: list[Exchange]
         # location: RefEntity | None = None
@@ -94,6 +93,13 @@ def compile_exchange_table(build: 'Build') -> pd.DataFrame:
               })
           .drop(columns='p.category')
         )
+    # check for non-unique exchange.internalId values within each process
+    fields_unique_exchange = ['p.@id', 'p.dpkg', 'e.internalId']
+    bad_exchange_mask = df_exchanges.duplicated(subset=fields_unique_exchange, keep=False)
+    if sum(bad_exchange_mask) > 0:
+        df_exchanges_bad = df_exchanges[bad_exchange_mask][fields_unique_exchange + ['e.flow.@id', 'e.flow.name']]
+        log.error('Non-unique exchange.internalId values detected:\n' +
+                  str(df_exchanges_bad.to_dict(orient='records')))
     return df_exchanges
 
 
@@ -111,7 +117,7 @@ def classify_exchanges(df_exchanges: pd.DataFrame) -> tuple[pd.DataFrame, pd.Dat
         '((`e.flow.flowType` == "PRODUCT_FLOW" and not `e.isInput`) or'
         ' (`e.flow.flowType` == "WASTE_FLOW" and `e.isInput`))'
         )
-    # validate expectation that remaining exchanges are only bridge-process outputs
+    # validate expectation: remaining exchanges are only bridge-process outputs
     df_validate = df_exchanges.query('(`p.is_bridge` and `e.isQuantitativeReference`)')
     if not (len(df_exchanges) - len(df_consumers) - len(df_providers)) == len(df_validate):
         df_bad_exchanges = df_exchanges[~df_exchanges.index.isin(df_consumers.index) &
@@ -121,7 +127,7 @@ def classify_exchanges(df_exchanges: pd.DataFrame) -> tuple[pd.DataFrame, pd.Dat
         log.warning(format_log_msg(
             ['Possibly invalid exchange patterns detected:',
              f'\t- {"\n\t\t- ".join([str(e) for e in bad_exchanges])}']))
-        # cross-dpkg variance in exchange definition/orientation conventions may disrupt linking
+        # capture exchange definition/orientation patterns that may disrupt linking
         df_odd_exchanges = df_exchanges.query(
             '(`e.flow.flowType` == "PRODUCT_FLOW" and `e.isInput` and `e.isQuantitativeReference`) or '
             '(`e.flow.flowType` == "WASTE_FLOW" and `e.isInput` and not `e.isQuantitativeReference`) or '
@@ -207,7 +213,7 @@ def assign_providers(
             # too many electricity providers; drop here & add placeholder below
         .assign(provider_candidate=lambda _df: _df['p.dpkg'].astype(str) + ': ' + _df['p.@id'])
         # TODO: [later] sort candidates, putting same-dpkg providers first
-        .groupby('e.flow.@id')['provider_candidate'].agg(lambda x: 'Please Select a Provider:\n' + '\n'.join(x))
+        .groupby('e.flow.@id')['provider_candidate'].agg(lambda x: 'Please select a provider:\n' + '\n'.join(x))
         .to_dict()
         )
     providers_multi_candidates |= {'3bca3bc6-2443-3184-8976-72dc98d258f6':
